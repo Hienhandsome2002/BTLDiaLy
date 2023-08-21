@@ -1,0 +1,20 @@
+.map,
+.righ-panel {
+    height: auto;
+    width: 100%;
+    float: left;
+}
+
+#title {
+    position: absolute;
+    /* top: 0%; */
+    /* left: 0%; */
+    width: 100%;
+    height: 4%;
+    background-color: #f1f3f4;
+    border: 1px solid darkgrey;
+}
+
+#map {
+    
+}
