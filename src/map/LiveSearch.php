@@ -85,19 +85,17 @@ function getInfoCMRToAjax($paPDO, $paSRID, $paPoint)
     //echo "<br>";
     //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"CMR_adm1\" where ST_Within('SRID=4326;POINT(12 5)'::geometry,geom)";
     //$mySQLStr = "SELECT ST_AsGeoJson(geom) as geo from \"CMR_adm1\" where ST_Within('SRID=".$paSRID.";".$paPoint."'::geometry,geom)";
-    $mySQLStr = "SELECT med_descri as des, isocountry, ST_AsText(geom) as toa_do, ST_Distance('SRID=" . $paSRID . ";" . $paPoint . "'::geometry, geom)
-    as distance  from \"cmr_roads\" ORDER BY distance LIMIT 1";
-    //echo $mySQLStr;
-    //echo "<br><br>";
+    $mySQLStr = "SELECT name , addr_stree,ST_Area(geom) as dientich, ST_Distance('SRID=" . $paSRID . ";" . $paPoint . "'::geometry, geom)
+    as distance  from \"hospital1\" ORDER BY distance LIMIT 1";;
     $result = query($paPDO, $mySQLStr);
 
     if ($result != null) {
         $resFin = '<table>';
         // Lặp kết quả
         foreach ($result as $item) {
-            $resFin = $resFin . '<tr><td>Mô tả: ' . $item['des'] . '</td></tr>';
-            $resFin = $resFin . '<tr><td>Đất nước: ' . $item['isocountry'] . '</td></tr>';
-            $resFin = $resFin . '<tr><td>Tọa độ: ' . $item['toa_do'] . '</td></tr>';
+            $resFin = $resFin . '<tr><td>' . $item['name'] . '</td></tr>';
+            $resFin = $resFin . '<tr><td>Địa chỉ: ' . $item['addr_stree'] . '</td></tr>';
+            $resFin = $resFin . '<tr><td>Diện tích: ' . $item['dientich'] . '</td></tr>';
             break;
         }
         $resFin = $resFin . '</table>';
@@ -105,4 +103,3 @@ function getInfoCMRToAjax($paPDO, $paSRID, $paPoint)
     } else
         return "null";
 }
-

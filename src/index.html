@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="./css/map.css">
     <link rel="stylesheet" href="./css/popup.css">
     <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="css/style.css">
+
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" type="text/javascript"></script>
     <script src="./map/showMap.js"></script>
@@ -21,39 +23,42 @@
 </head>
 
 <body>
-    <!-- <div class="header">
-        <h1>Header</h1>
-    </div> -->
-    <div class="row gx-0">
-        <div class="col-2">
-            <div style="border: 1px solid #000;height: 100%;">
-                <input type="text" id="txtPoint1" />
-                <br />
-                <input type="text" id="txtPoint2" />
-                <br />
-                <button id="btnSolve">Tìm đường</button>
-                <button id="btnReset">Xóa đường</button>
-                <div>
-                    <label for="searchTermInput">Tìm kiếm theo thuộc tính:</label>
-                    <input type="text" id="searchTermInput">
-                    <button id="searchAndZoomButton">Tìm kiếm và Zoom</button>
+    <div class="main">
+        <header>WebGis tìm kiếm bệnh viện gần nhất trên địa bàn Hà Nội</header>
+        <div class="main-gis">
+            <div class="main__gis--left">
+                <div class="checkbox_form">
+                    <label for="check-hospital1">Hospital1</label>
+                    <input type="checkbox" name="" id="check-hospital1" checked />
                 </div>
-                <!-- <form>
-                    <input type="text" size="30" onkeyup="Showresult(this.value)" placeholder="tìm kiếm"></input>
-                    <div id="livesearch"></div>
-                </form> -->
-            </div>
-        </div>
-        <div class="col-10">
-            <div style="border: 1px solid #000; height: 100%;">
-                <div id="map" class="map"></div>
-                <div id="info"></div>
-                <div id="popup" class="ol-popup">
-                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                    <div id="popup-content"></div>
+                <div class="checkbox_form">
+                    <label for="check-HaNoiVung">HaNoiVung</label>
+                    <input type="checkbox" name="" id="check-HaNoiVung" checked />
                 </div>
+                <!-- Check Box -->
 
             </div>
+            <div class="map" id="map"></div>
+            <div class="main__gis--right">
+                <div class="line1">
+                    <h3>Bệnh viện</h3>
+                    <img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=BTL:hospital1" alt="" />
+                </div>
+                <div class="line">
+                    <h3>Khu vực Hà nội</h3>
+                    <img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=BTL:hanoivung"
+                        alt="" />
+                </div>
+            </div>
+        </div>
+
+        <div id="map" class="map"></div>
+        <div id="info"></div>
+        <div id="popup" class="ol-popup">
+            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content"></div>
+        </div>
+
 
 
 </body>
