@@ -48,34 +48,6 @@ $("#document").ready(function () {
         source: new ol.source.OSM({})
     });
 
-    // HaNoiDiem
-    var haNoiDiem = new ol.layer.Image({
-        source: new ol.source.ImageWMS({
-            ratio: 1,
-            url: 'http://localhost:8080/geoserver/ne/wms',
-            params: {
-                'FORMAT': format,
-                'VERSION': '1.1.0',
-                STYLES: '',
-                LAYERS: 'ne:hanoidiem',
-            }
-        }),
-    })
-
-    // HaNoiDuong
-    var haNoiDuong = new ol.layer.Image({
-        source: new ol.source.ImageWMS({
-            ratio: 1,
-            url: 'http://localhost:8080/geoserver/ne/wms',
-            params: {
-                'FORMAT': format,
-                'VERSION': '1.1.0',
-                STYLES: '',
-                LAYERS: 'ne:hanoiduong',
-            }
-        }),
-    })
-
     // HaNoiVung
     var haNoiVung = new ol.layer.Image({
         source: new ol.source.ImageWMS({
@@ -102,21 +74,6 @@ $("#document").ready(function () {
                 STYLES: '',
                 LAYERS: 'ne:hospital1',
 
-            }
-        }),
-        zIndex: 2
-    })
-
-    // Hosital2
-    var hospital2 = new ol.layer.Image({
-        source: new ol.source.ImageWMS({
-            ratio: 1,
-            url: 'http://localhost:8080/geoserver/ne/wms',
-            params: {
-                'FORMAT': format,
-                'VERSION': '1.1.0',
-                STYLES: '',
-                LAYERS: 'ne:hospital2',
             }
         }),
         zIndex: 2
@@ -177,7 +134,7 @@ $("#document").ready(function () {
             if (!data || !data.features || data.features.length === 0) {
                 throw new Error("Invalid response format");
             }
-            console.log(data);
+            // console.log(data);
 
             distanceFromStartToBank = (
                 Number(data.features[0].properties.summary.distance) / 1000
@@ -185,6 +142,7 @@ $("#document").ready(function () {
             var routeGeometry = data.features[0].geometry.coordinates;
             // console.log(startPoint);
             // console.log(destPoint);
+            console.log(routeGeometry);
             highlightRoute(routeGeometry);
         } catch (error) {
             console.error("Error fetching route data:", error);
@@ -192,22 +150,32 @@ $("#document").ready(function () {
     }
 
     function highlightRoute(routeCoordinates) {
+        var transformedCoordinates = routeCoordinates.map(function (coord) {
+            return ol.proj.fromLonLat(coord);
+        });
+        var routeGeometry = new ol.geom.LineString(transformedCoordinates);
         // console.log(routeCoordinates);
-        var routeGeometry = new ol.geom.LineString(
-            routeCoordinates.map(function (coord) {
-                // console.log(coord);
-                return coord
-            })
-        );
-        console.log(routeGeometry);
+        // var routeGeometry = new ol.geom.LineString(
+        //     routeCoordinates.map(function (coord) {
+        //         // console.log(coord);
+        //         return ol.proj.fromLonLat(coord);
+        //     })
+        // );
+        // console.log(routeGeometry);
         var routeFeature = new ol.Feature({
             geometry: routeGeometry,
         });
+        var vectorLayer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: [routeFeature]
+            })
+        });
+        map.addLayer(vectorLayer)
 
         var routeStyle = new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: "green",
-                width: 12,
+                color: "red",
+                width: 5,
             }),
         });
 
